@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.restart.dao.AdDao">
+
+    <resultMap id="adResult" type="Ad">
+        <id column="id" property="id" />
+        <result column="title" property="title"/>
+        <result column="img_file_name" property="imgFileName"/>
+        <result column="link" property="link"/>
+        <result column="weight" property="weight"/>
+    </resultMap>
+
+    <sql id="baseColumnAlias">
+        ${alias}.id,
+        ${alias}.title,
+        ${alias}.img_file_name,
+        ${alias}.link,
+        ${alias}.weight
+    </sql>
+    <sql id="baseColumn">
+        id,
+        title,
+        img_file_name,
+        link,
+        weight
+    </sql>
+    <sql id="insertColumn">
+        #{id},
+        #{title},
+        #{imgFileName},
+        #{link},
+        #{weight}
+    </sql>
+    <sql id="baseWhere">
+        <if test="id != null">
+            and id = #{id}
+        </if>
+       <if test="title != null">
+           and title = #{title}
+       </if>
+        <if test="weight!=null">
+           and weight = #{}
+        </if>
+    </sql>
+
+    <select id="getAdListByPage" parameterType="Ad" resultType="Ad">
+        select <include refid="baseColumn" /> from Ad
+        <where>
+            <include refid="baseWhere"/>
+        </where>
+    </select>
+
+    <insert id="addAd">
+        insert into Ad (<include refid="baseColumn" />) value (<include refid="insertColumn"/> )
+    </insert>
+</mapper>
