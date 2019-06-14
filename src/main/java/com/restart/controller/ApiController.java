@@ -53,10 +53,20 @@ public class ApiController {
 
     @PostMapping(value="/addFile")
     @ApiOperation(value = "上传广告文件")
-    public BaseResponse addAd(AdDto adDto) throws BaseException {
+    public BaseResponse addAd(AdDto adDto){
 
         adService.addAd(adDto);
         return new BaseResponse(BaseStatus.SUCCESS.getCode());
+    }
+
+    @DeleteMapping(value="/deleteAdById/{id}")
+    @ApiImplicitParam(name = "id",value = "广告ID", required = true, dataType = "Long",paramType = "path")
+    @ApiOperation(value="删除广告")
+    public BaseResponse deleteAdById(@PathVariable Long id){
+
+        adService.deleteById(id);
+        return new BaseResponse(BaseStatus.SUCCESS.getCode());
+
     }
 
 }

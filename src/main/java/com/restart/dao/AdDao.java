@@ -8,4 +8,8 @@ public interface AdDao   {
     List<Ad> getAdListByPage(Ad ad);
 
     boolean  addAd(Ad ad);
+
+    boolean  deleteById(Long id);
+
+    Ad selectById(Long id);
 }

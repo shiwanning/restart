@@ -41,10 +41,13 @@
            and title = #{title}
        </if>
         <if test="weight!=null">
-           and weight = #{}
+           and weight = #{weight}
         </if>
     </sql>
 
+    <delete id="deleteById">
+        delete from Ad where id = #{_parameter}
+    </delete>
     <select id="getAdListByPage" parameterType="Ad" resultType="Ad">
         select <include refid="baseColumn" /> from Ad
         <where>
@@ -55,4 +58,8 @@
     <insert id="addAd">
         insert into Ad (<include refid="baseColumn" />) value (<include refid="insertColumn"/> )
     </insert>
+
+    <select id="selectById" resultType="Ad">
+        select <include refid="baseColumn" /> from Ad where id = #{_parameter}
+    </select>
 </mapper>

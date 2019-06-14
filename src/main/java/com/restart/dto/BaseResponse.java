@@ -43,6 +43,7 @@ public class BaseResponse<T> implements Serializable {
         this.success = success;
     }
 
+
     public BaseResponse() {
     }
 }

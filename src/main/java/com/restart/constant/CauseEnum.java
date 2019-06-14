@@ -1,16 +1,16 @@
 package com.restart.constant;
 
 public enum CauseEnum {
-    FILE_NOT_EXIST("文件不存在");
+    FILE_NOT_EXIST("文件不存在"),
+    AD_NOT_EXIST("广告不存在");
 
-    private String description;
+    private String errorCode;
 
-
-    public String getDescription() {
-        return description;
+    public String getErrorCode() {
+        return errorCode;
     }
 
-    CauseEnum(String description) {
-        this.description = description;
+    CauseEnum(String errorCode) {
+        this.errorCode = errorCode;
     }
 }

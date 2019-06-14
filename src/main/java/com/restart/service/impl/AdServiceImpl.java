@@ -7,6 +7,7 @@ import com.restart.dao.AdDao;
 import com.restart.dto.AdDto;
 import com.restart.dto.PageResult;
 import com.restart.service.AdService;
+import com.restart.util.FileUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,8 +52,14 @@ public class AdServiceImpl implements AdService {
         return  new PageResult<AdDto>(adDtos, condition.getPage());
     }
 
+
     @Override
-    public boolean addAd(AdDto adDto) throws BaseException {
+    public boolean update(AdDto adDto) {
+        return false;
+    }
+
+    @Override
+    public boolean addAd(AdDto adDto){
         MultipartFile multiFile = adDto.getImgFile();
         File file = null;
         String fileName = System.currentTimeMillis() + "_" +  multiFile.getOriginalFilename();
@@ -79,4 +85,24 @@ public class AdServiceImpl implements AdService {
             return  false;
         }
     }
+
+    @Override
+    public boolean deleteById(Long id) {
+
+        Ad ad = adDao.selectById(id);
+        if(ad == null){
+            throw new BaseException(CauseEnum.AD_NOT_EXIST);
+        }
+        try {
+            adDao.deleteById(id);
+            FileUtil.deleteFile(savePath + ad.getImgFileName());
+            return true;
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }

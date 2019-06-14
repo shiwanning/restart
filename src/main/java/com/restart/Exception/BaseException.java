@@ -1,19 +1,30 @@
 package com.restart.Exception;
 
 import com.restart.constant.CauseEnum;
+import org.springframework.util.StringUtils;
 
-public class BaseException extends Exception {
+public class BaseException extends RuntimeException {
 
+    private String errorCode;
 
     public BaseException(CauseEnum causeEnum) {
-        super(causeEnum.getDescription());
+        super(causeEnum.getErrorCode());
+        this.errorCode = causeEnum.getErrorCode();
     }
 
-    public BaseException(String message) {
-        super(message);
+    public BaseException(CauseEnum causeEnum, String description) {
+        super(StringUtils.isEmpty(description)
+                ? causeEnum.getErrorCode()
+                : StringUtils.isEmpty(causeEnum.getErrorCode()) ? description : description + "[" + causeEnum.getErrorCode() + "】");
+        this.errorCode = causeEnum.getErrorCode();
     }
 
-    public BaseException(String message, Throwable cause) {
-        super(message, cause);
+    public BaseException(CauseEnum causeEnum, Throwable cause) {
+        super(causeEnum.getErrorCode(), cause);
+        this.errorCode = causeEnum.getErrorCode();
+    }
+
+    public String getErrorCode() {
+        return errorCode;
     }
 }
