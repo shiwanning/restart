@@ -84,14 +84,11 @@ public class BusinessServiceImpl implements BusinessService {
         for(Business cr: businesses){
             BusinessDto bs = new BusinessDto();
             BeanUtils.copyProperties(cr, bs);
-
-            Long star = generateStar(cr);
-            bs.setStar(star.intValue());
+            bs.setStar(generateStar(cr).intValue());
             bs.setImgFileName(filePath + cr.getImgFileName());
 
             result.add(bs);
         }
-
 
         return new PageResult<BusinessDto>(result, condition.getPage());
     }

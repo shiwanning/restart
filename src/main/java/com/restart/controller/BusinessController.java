@@ -1,8 +1,12 @@
 package com.restart.controller;
 
 
+import com.restart.bean.Business;
+import com.restart.bean.Page;
 import com.restart.dto.BaseResponse;
 import com.restart.dto.BusinessDto;
+import com.restart.dto.PageBaseResponse;
+import com.restart.dto.PageResult;
 import com.restart.service.BusinessService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -37,7 +41,7 @@ public class BusinessController {
             @ApiImplicitParam(name = "city",value = "城市", dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "category",value = "类别", dataType = "String", paramType = "query")
     })
-    public BaseResponse<BusinessDto> getBuisinessByPageCondition(
+    public BaseResponse<BusinessDto> getBusinessByPageCondition(
             @RequestParam Integer page,
             @RequestParam Integer size,
             @RequestParam(required = false) String  keyWord,
@@ -46,6 +50,23 @@ public class BusinessController {
             @RequestParam(required = false)  String category
     ){
 
-        return  null;
+        BusinessDto businessDto = new BusinessDto();
+        Page pageCondition = businessDto.getPage();
+        pageCondition.setCurrentPage(page);
+        pageCondition.setPageNumber(size);
+
+        businessDto.setCategory(category);
+        businessDto.setCity(city);
+        businessDto.setPrice(price);
+        businessDto.setKeyWord(keyWord);
+
+        PageResult<BusinessDto> businessByPage = businessService.getBusinessByPage(businessDto);
+
+        return  new PageBaseResponse<BusinessDto>(businessByPage);
+    }
+
+    @PutMapping
+    public BaseResponse updateBusiness(BusinessDto businessDto){
+       return  null;
     }
 }

@@ -10,8 +10,6 @@ public class PageResult<T> {
 
     private Page page;
 
-    private Boolean hasMore;
-
     public Collection<T> getResult() {
         return result;
     }
@@ -28,18 +26,10 @@ public class PageResult<T> {
         this.page = page;
     }
 
-    public Boolean getHasMore() {
-        return hasMore;
-    }
-
-    public void setHasMore(Boolean hasMore) {
-        this.hasMore = hasMore;
-    }
 
     public PageResult(Collection<T> result, Page page) {
         this.result = result;
         this.page = page;
-        this.hasMore = page.getCurrentPage() < page.getTotalNumber();
     }
     public PageResult() {
     }

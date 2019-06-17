@@ -47,6 +47,10 @@ public class BaseResponse<T> implements Serializable {
         this.success = success;
     }
 
+    public BaseResponse(Collection<T> value){
+        this.value = value;
+        this.success = true;
+    }
 
     public BaseResponse() {
     }
