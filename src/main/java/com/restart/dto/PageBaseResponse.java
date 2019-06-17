@@ -7,6 +7,8 @@ public class PageBaseResponse<T> extends BaseResponse {
 
     private PageResult<T> pageResult;
 
+    private Boolean hasMore;
+
     public PageResult<T> getPageResult() {
         return pageResult;
     }
