@@ -9,7 +9,9 @@ public interface AdDao   {
 
     boolean  addAd(Ad ad);
 
-    boolean  deleteById(Long id);
+    Long  deleteById(Long id);
 
     Ad selectById(Long id);
+
+    Long updateAd(Ad ad);
 }

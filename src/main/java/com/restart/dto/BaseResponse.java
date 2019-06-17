@@ -32,6 +32,10 @@ public class BaseResponse<T> implements Serializable {
         return errorMessage;
     }
 
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
     public void setSuccess(BaseStatus success) {
         this.success = success.getCode();
         if(this.success != BaseStatus.SUCCESS.getCode()){

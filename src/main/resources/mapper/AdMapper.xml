@@ -56,10 +56,30 @@
     </select>
 
     <insert id="addAd">
-        insert into Ad (<include refid="baseColumn" />) value (<include refid="insertColumn"/> )
+        insert into Ad (<include refid="baseColumn" />) values (<include refid="insertColumn"/> )
     </insert>
 
     <select id="selectById" resultType="Ad">
         select <include refid="baseColumn" /> from Ad where id = #{_parameter}
     </select>
+
+
+    <sql id="updateColumn">
+        <if test="title != null">
+            and title = #{title}
+        </if>
+        <if test="weight!=null">
+            and weight = #{weight}
+        </if>
+        <if test="imgFileName != null">
+            and img_file_name = #{imgFileName}
+        </if>
+    </sql>
+    <update id="updateAd">
+        UPDATE Ad
+        <set>
+            <include refid="updateColumn" />
+        </set>
+        where  id = #{id}
+    </update>
 </mapper>
