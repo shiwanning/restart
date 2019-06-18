@@ -66,7 +66,8 @@ public class BusinessController {
     }
 
     @PutMapping
+    @ApiOperation(value = "/更新商户")
     public BaseResponse updateBusiness(BusinessDto businessDto){
-       return  null;
+        return  null;
     }
 }

@@ -17,10 +17,10 @@
         <result column="category" property="category" />
         <result column="star_total_num" property="starTotalNum" />
         <result column="comment_total_num" property="commentTotalNum" />
-        <association property="cityDic">
+        <association property="cityDic" javaType="Dic">
             <result column="city_name"  property="name"/>
         </association>
-        <association property="categoryDic">
+        <association property="categoryDic" javaType="Dic">
             <result column="category_name" property="name"/>
         </association>
 
@@ -48,7 +48,7 @@
         ,${alias}.price
         ,${alias}.distance
         ,${alias}.number
-        ,${alias}.desc
+        ,${alias}.`desc`
         ,${alias}.city
         ,${alias}.category
         ,${alias}.star_total_num
@@ -74,14 +74,8 @@
     </insert>
 
     <sql id="queryColumn">
-        <if test="title != null">
-            and   bs.title like '%' #{title} '%'
-        </if>
-        <if test="subtitle != null">
-            and   bs.subtitle like '%'{subtitle} '%'
-        </if>
-        <if test="desc != null">
-            and   bs.desc like '%' #{desc} '%'
+        <if test="title != null and title != '' and subtitle != null and subtitle != '' and desc != null and desc != '' ">
+            and (title like '%' #{title} '%' or subtitle like '%' #{subtitle} '%' or `desc` like '%' #{desc} '%')
         </if>
         <if test="city != null">
             and   bs.city = #{city}
@@ -99,13 +93,24 @@
     </select>
     <select id="selectBusinessByPage" resultMap="BusinessResult">
         select <include refid="baseColumnAlias"><property name="alias" value="bs" /></include>
-        ,dcity.city_name, dcategory.category_name
+        ,dcity.name city_name, dcategory.name category_name
         from
         business bs left join dic dcity on bs.city = dcity.code and dcity.type = '${@com.restart.constant.DicTypeConst@CITY}'
-        left join dic dcategory on bs.city = dcategory.code and dcategory.type = '${@com.restart.constant.DicTypeConst@CATEGORY}'
+        left join dic dcategory on bs.category = dcategory.code and dcategory.type = '${@com.restart.constant.DicTypeConst@CATEGORY}'
         <where>
             <include refid="queryColumn"/>
         </where>
         order by bs.id
     </select>
+
+    <!---->
+    <!--<sql id="">-->
+        <!---->
+    <!--</sql>-->
+    <!--<update id="updateBusiness">-->
+        <!--UPDATE business -->
+        <!--<set>-->
+            <!---->
+        <!--</set>-->
+    <!--</update>-->
 </mapper>

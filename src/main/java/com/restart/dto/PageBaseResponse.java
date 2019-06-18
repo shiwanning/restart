@@ -18,6 +18,14 @@ public class PageBaseResponse<T> extends BaseResponse {
         this.pageResult = pageResult;
     }
 
+    public Boolean getHasMore() {
+        return hasMore;
+    }
+
+    public void setHasMore(Boolean hasMore) {
+        this.hasMore = hasMore;
+    }
+
     public PageBaseResponse(PageResult<T> pageResult) {
         super.setSuccess(BaseStatus.SUCCESS);
         this.pageResult = pageResult;
