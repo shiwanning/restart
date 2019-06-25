@@ -33,7 +33,7 @@ public class CodeCache {
         return  true;
     }
 
-    public String getCode(String userName){
+    public String getCode(Long userName){
         if(codeMap.containsKey(userName)){
             return  codeMap.get(userName);
         }

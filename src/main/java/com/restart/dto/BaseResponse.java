@@ -16,6 +16,8 @@ public class BaseResponse<T> implements Serializable {
 
     private String errorMessage;
 
+    private String token;
+
     public Collection<T> getValue() {
         return value;
     }
@@ -52,6 +54,19 @@ public class BaseResponse<T> implements Serializable {
         this.success = true;
     }
 
+    public BaseResponse(String token){
+        this.success = true;
+        this.token = token;
+    }
+
     public BaseResponse() {
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

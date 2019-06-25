@@ -4,8 +4,11 @@ package com.restart.service.impl;
 import com.restart.Exception.BaseException;
 import com.restart.bean.Member;
 import com.restart.cache.CodeCache;
+import com.restart.cache.TokenCache;
 import com.restart.constant.CauseEnum;
 import com.restart.dao.MemberDao;
+import com.restart.dto.BaseResponse;
+import com.restart.dto.MemberDto;
 import com.restart.service.MemberService;
 import com.restart.util.CommonUtil;
 import org.slf4j.Logger;
@@ -44,10 +47,33 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Override
+    public BaseResponse memberLogin(MemberDto memberDto) {
+        if(memberDto != null) {
+            Long phone = memberDto.getPhone();
+            MemberDto member = findMember(phone);
+            if (member == null) {
+                throw new BaseException(CauseEnum.MEMBER_NOT_EXIST);
+            }
+            String smsCode = memberDto.getSmsCode();
+            if (!smsCode.equals(CodeCache.getInstance().getCode(phone))) {
+                throw new BaseException(CauseEnum.VERIFY_FAIL);
+            }
+            String token = CommonUtil.genearateToken();
+            TokenCache.getInstance().setToken(phone, token);
+            return new BaseResponse(token);
+        }
+        throw new BaseException(CauseEnum.MEMBER_NOT_EXIST);
+    }
 
     @Override
     public boolean SmsSendCode(String code) {
         LOGGER.info(code);
         return  true;
+    }
+
+    @Override
+    public MemberDto findMember(Long longUserName) {
+        return null;
     }
 }

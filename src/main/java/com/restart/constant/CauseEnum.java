@@ -5,7 +5,9 @@ public enum CauseEnum {
     AD_NOT_EXIST("广告不存在"),
     MEMBER_NOT_EXIST("会员不存在"),
     REPEAT_REQUEST("重复请求"),
-    SEND_FAIL("发送失败");
+    SEND_FAIL("发送失败"),
+    VERIFY_FAIL("验证失败")
+    ;
 
     private String errorCode;
 

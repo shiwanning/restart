@@ -2,9 +2,10 @@ package com.restart.dto;
 
 import com.restart.bean.Page;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-public class PageResult<T> {
+public class PageResult<T> implements Serializable {
 
     private Collection<T> result;
 

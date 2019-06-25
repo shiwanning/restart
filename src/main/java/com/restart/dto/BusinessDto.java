@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.restart.bean.Business;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serializable;
+
 
 @JsonInclude(Include.NON_NULL)
-public class BusinessDto extends Business {
+public class BusinessDto extends Business implements Serializable {
 
 
     private MultipartFile multipartFile;
