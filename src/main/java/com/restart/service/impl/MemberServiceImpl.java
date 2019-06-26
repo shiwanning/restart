@@ -13,6 +13,7 @@ import com.restart.service.MemberService;
 import com.restart.util.CommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,31 +31,23 @@ public class MemberServiceImpl implements MemberService {
     private MemberDao memberDao;
 
     public boolean memberSms(Long longUserName) {
-        List<Member> members = memberDao.findMemberByUserName(longUserName);
-        if(members.size() == 1){
-            String code = CommonUtil.genearateNumbers(6).toString();
-            CodeCache instance = CodeCache.getInstance();
-            if (!instance.save(longUserName, code)) {
-                throw  new BaseException(CauseEnum.REPEAT_REQUEST);
-            }
-            if(!SmsSendCode(code)){
-                throw  new BaseException(CauseEnum.SEND_FAIL);
-            }
-            return true;
-
-        }else {
-            throw new BaseException(CauseEnum.MEMBER_NOT_EXIST);
+        memberDao.findMemberByUserName(longUserName);
+        String code = CommonUtil.genearateNumbers(6).toString();
+        CodeCache instance = CodeCache.getInstance();
+        if (!instance.save(longUserName, code)) {
+            throw  new BaseException(CauseEnum.REPEAT_REQUEST);
         }
+        if(!SmsSendCode(code)){
+            throw  new BaseException(CauseEnum.SEND_FAIL);
+        }
+        return true;
     }
 
     @Override
     public BaseResponse memberLogin(MemberDto memberDto) {
         if(memberDto != null) {
             Long phone = memberDto.getPhone();
-            MemberDto member = findMember(phone);
-            if (member == null) {
-                throw new BaseException(CauseEnum.MEMBER_NOT_EXIST);
-            }
+            findMember(phone);
             String smsCode = memberDto.getSmsCode();
             if (!smsCode.equals(CodeCache.getInstance().getCode(phone))) {
                 throw new BaseException(CauseEnum.VERIFY_FAIL);
@@ -74,6 +67,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDto findMember(Long longUserName) {
-        return null;
+        MemberDto memberDto = new MemberDto();
+        List<Member> memberByUserName = memberDao.findMemberByUserName(longUserName);
+        if(memberByUserName.size() == 1){
+            Member member = memberByUserName.get(0);
+            BeanUtils.copyProperties(member, memberDto);
+            return memberDto;
+        }
+        throw new BaseException(CauseEnum.MEMBER_NOT_EXIST);
     }
 }
