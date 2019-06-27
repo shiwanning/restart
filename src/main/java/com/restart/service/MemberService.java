@@ -2,6 +2,7 @@ package com.restart.service;
 
 import com.restart.dto.BaseResponse;
 import com.restart.dto.MemberDto;
+import com.restart.dto.OrderMemberDto;
 
 public interface MemberService {
 
@@ -12,4 +13,8 @@ public interface MemberService {
     MemberDto findMember(Long longUserName);
 
     BaseResponse memberLogin(MemberDto memberDto);
+
+    Long findMemberByCacheToken(String token);
+
+    boolean orderToBuy(OrderMemberDto orderMemberDto);
 }

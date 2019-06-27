@@ -5,6 +5,7 @@ package com.restart.controller;
 import com.restart.constant.BaseStatus;
 import com.restart.dto.BaseResponse;
 import com.restart.dto.MemberDto;
+import com.restart.dto.OrderMemberDto;
 import com.restart.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,5 +37,15 @@ public class ApiController {
 
       return  memberService.memberLogin(memberDto);
 
+    }
+
+    @PostMapping(value = "/orderByMember")
+    @ApiOperation(value = "订单购买")
+    public BaseResponse orderByMember(OrderMemberDto orderMemberDto){
+
+        memberService.orderToBuy(orderMemberDto);
+
+
+        return new BaseResponse(BaseStatus.SUCCESS.getCode());
     }
 }

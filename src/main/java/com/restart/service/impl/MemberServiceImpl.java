@@ -3,12 +3,17 @@ package com.restart.service.impl;
 
 import com.restart.Exception.BaseException;
 import com.restart.bean.Member;
+import com.restart.bean.Orders;
 import com.restart.cache.CodeCache;
 import com.restart.cache.TokenCache;
 import com.restart.constant.CauseEnum;
+import com.restart.constant.OrderStatus;
 import com.restart.dao.MemberDao;
+import com.restart.dao.OrdersDao;
 import com.restart.dto.BaseResponse;
 import com.restart.dto.MemberDto;
+import com.restart.dto.OrderDto;
+import com.restart.dto.OrderMemberDto;
 import com.restart.service.MemberService;
 import com.restart.util.CommonUtil;
 import org.slf4j.Logger;
@@ -29,6 +34,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Autowired
     private MemberDao memberDao;
+
+    @Autowired
+    private OrdersDao ordersDao;
 
     public boolean memberSms(Long longUserName) {
         memberDao.findMemberByUserName(longUserName);
@@ -75,5 +83,34 @@ public class MemberServiceImpl implements MemberService {
             return memberDto;
         }
         throw new BaseException(CauseEnum.MEMBER_NOT_EXIST);
+    }
+
+    @Override
+    public Long findMemberByCacheToken(String token) {
+        TokenCache instance = TokenCache.getInstance();
+        return instance.getToken(token);
+    }
+
+    @Override
+    public boolean orderToBuy(OrderMemberDto orderMemberDto) {
+
+        Long phone = findMemberByCacheToken(orderMemberDto.getToken());
+
+        if(phone != null && phone.equals(orderMemberDto.getUserName())){
+
+            MemberDto member = findMember(phone);
+            if(member != null){
+
+                Orders orders = new Orders();
+                orders.setBusinessId(orderMemberDto.getId());
+                orders.setPrice(orderMemberDto.getPrice());
+                orders.setNum(orderMemberDto.getNumber());
+                orders.setMemberId(member.getId());
+                orders.setCommentState(OrderStatus.NOT_COMMENT);
+                return ordersDao.insertOrder(orders) == 1;
+            }
+            throw new BaseException(CauseEnum.MEMBER_NOT_EXIST);
+        }
+        throw new BaseException(CauseEnum.MEMBER_NOT_LOGIN);
     }
 }

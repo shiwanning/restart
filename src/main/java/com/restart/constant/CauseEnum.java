@@ -6,7 +6,8 @@ public enum CauseEnum {
     MEMBER_NOT_EXIST("会员不存在"),
     REPEAT_REQUEST("重复请求"),
     SEND_FAIL("发送失败"),
-    VERIFY_FAIL("验证失败")
+    VERIFY_FAIL("验证失败"),
+    MEMBER_NOT_LOGIN("用户未登录")
     ;
 
     private String errorCode;

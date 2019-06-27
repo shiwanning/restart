@@ -1,5 +1,6 @@
 package com.restart.cache;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,10 +8,10 @@ public class TokenCache {
 
     private static TokenCache tokenCache;
 
-    private Map<Long, String> tokenMap;
+    private Map<String, Long> tokenMap;
 
     public TokenCache(){
-        this.tokenMap = new HashMap<Long, String >();
+        this.tokenMap = new HashMap<String, Long>();
     }
 
 
@@ -28,12 +29,12 @@ public class TokenCache {
 
 
     public void setToken(Long userName, String token){
-        tokenMap.put(userName, token);
+        tokenMap.put(token, userName);
     }
 
-    public String getToken(Long userName, String token){
-        if(tokenMap.containsKey(userName)){
-            return  tokenMap.get(userName);
+    public Long getToken(String token){
+        if(tokenMap.containsKey(token)){
+            return  tokenMap.get(token);
         }
         return null;
     }
