@@ -103,6 +103,21 @@
         order by bs.id
     </select>
 
+
+    <select id="staticsBusinessNumber" resultType="Business">
+        SELECT
+            sum(ot.num) number,
+            ot.business_id id
+        FROM
+            orders ot
+        WHERE
+            ot.create_time > DATE_FORMAT(
+                date_sub(curdate(), INTERVAL 1 DAY),
+                '%Y-%m-%d'
+            )
+        GROUP BY
+            ot.business_id
+    </select>
     <!---->
     <!--<sql id="">-->
         <!---->

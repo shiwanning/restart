@@ -11,4 +11,6 @@ public interface BusinessDao {
     List<Business> selectBusinessByPage(Business business);
 
     Business selectById(Long id);
+
+    List<Business> staticsBusinessNumber();
 }
